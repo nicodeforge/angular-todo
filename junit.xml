@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="4" failures="0" errors="0" time="12.249">
+  <testsuite name="TodoComponent" errors="0" failures="0" skipped="0" timestamp="2023-03-07T09:43:49" time="9.231" tests="1">
+    <testcase classname="TodoComponent should create" name="TodoComponent should create" time="0.111">
+    </testcase>
+  </testsuite>
+  <testsuite name="AppComponent" errors="0" failures="0" skipped="0" timestamp="2023-03-07T09:43:49" time="9.911" tests="3">
+    <testcase classname="AppComponent should create the app" name="AppComponent should create the app" time="0.227">
+    </testcase>
+    <testcase classname="AppComponent should have as title &apos;todo-list&apos;" name="AppComponent should have as title &apos;todo-list&apos;" time="0.058">
+    </testcase>
+    <testcase classname="AppComponent should render title" name="AppComponent should render title" time="0.05">
+    </testcase>
+  </testsuite>
+</testsuites>
