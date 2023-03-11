@@ -21,7 +21,7 @@
     "useDefineForClassFields": false,
     "esModuleInterop": true,
     "lib": [
-      "ES2015",
+      "es2017",
       "dom"
     ]
   },

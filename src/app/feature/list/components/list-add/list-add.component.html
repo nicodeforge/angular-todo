@@ -1,0 +1,27 @@
+<form
+  [formGroup]="listForm"
+  (ngSubmit)="onAddList()"
+  [ngClass]="
+    visible
+      ? layout === 'horizontal'
+        ? 'inline-flex'
+        : 'flex flex-col'
+      : 'hidden'
+  "
+>
+  <input
+    type="text"
+    formControlName="listName"
+    name="name"
+    id="name"
+    placeholder="Name your list"
+    [ngClass]="layout === 'vertical' ? 'rounded-t' : 'rounded-l'"
+  />
+  <button
+    class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium text-sm px-5 py-3 text-center"
+    type="submit"
+    [ngClass]="layout === 'vertical' ? 'rounded-b' : 'rounded-r'"
+  >
+    {{ isEditMode ? "Update" : "Add" }}
+  </button>
+</form>

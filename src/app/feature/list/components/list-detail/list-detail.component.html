@@ -1,0 +1,18 @@
+<app-todo-add
+  [showListSelect]="false"
+  [list]="list"
+  [itemEditted]="itemEditted"
+  (itemAdded)="onItemAdded($event)"
+  (itemEditted)="onItemEdittedEnd($event)"
+></app-todo-add>
+<app-todo-list
+  [items]="activeItems"
+  (itemEditted)="onItemEdittedStart($event)"
+  (itemArchived)="onItemArchived($event)"
+></app-todo-list>
+<app-todo-history
+  [list]="list"
+  [items]="archivedItems"
+  (itemUnarchived)="onItemUnarchived($event)"
+  (itemDeleted)="onItemDeleted($event)"
+></app-todo-history>

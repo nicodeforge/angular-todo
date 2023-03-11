@@ -1,0 +1,7 @@
+<app-todo-history
+  [showHistory]="true"
+  [showToggle]="false"
+  [items]="items"
+  (itemUnarchived)="onItemUnarchived($event)"
+  (itemDeleted)="onItemDeleted($event)"
+></app-todo-history>
