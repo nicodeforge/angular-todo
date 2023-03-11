@@ -53,18 +53,28 @@
         />
       </svg>
     </button>
-    <ul class="space-y-2">
-      <li *ngFor="let menu of menus">
+    <ul class="space-y-2 flex-col">
+      <li *ngFor="let menu of menus" class="flex-row">
         <a
           [routerLink]="menu.link"
           routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
           class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-gray-700"
         >
           <hero-icon *ngIf="menu.icon" [name]="menu.icon"></hero-icon>
-          <span class="ml-3">{{ menu.label }}</span>
+          <span class="ml-3 flex-grow">{{ menu.label }}</span>
         </a>
-        <ul *ngIf="menu.submenus">
-          <li *ngFor="let submenu of menu.submenus">{{ submenu.label }}</li>
+        <ul *ngIf="menu.submenus" class="flex-col">
+          <li *ngFor="let submenu of menu.submenus" class="flex-row">
+            <a
+              [routerLink]="submenu.link"
+              routerLinkActive="active"
+              class="flex flex-grow items-center ml-4 mt-2 p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-gray-700"
+            >
+              <hero-icon *ngIf="submenu.icon" [name]="submenu.icon"></hero-icon>
+              <span class="ml-3 flex-grow">{{ submenu.label }}</span>
+            </a>
+          </li>
         </ul>
       </li>
     </ul>

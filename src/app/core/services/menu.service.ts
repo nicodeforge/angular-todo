@@ -1,37 +1,41 @@
 import { Injectable } from "@angular/core";
-import { MenuItem } from "../menu.item";
-import { TodoService } from "../../services/todo.service";
+import { MenuItem } from "../../models/menu.item";
 import { List } from "../../models/list.model";
+import { ListService } from "../../feature/list/services/list.service";
+import { BehaviorSubject } from "rxjs";
+import { HeroIconName } from "ng-heroicon";
 
 @Injectable()
 export class MenuService {
-  private lists!: List[];
-  public menus: MenuItem[] = [
-    {
-      label: "Manage lists",
-      link: "/list",
-      icon: "view-list",
-      submenus: this.getListsMenu(),
-    },
-    {
-      label: "My archive",
-      link: "/archive",
-      icon: "archive",
-    },
-  ];
+  public menus: BehaviorSubject<MenuItem[]> = new BehaviorSubject<MenuItem[]>(
+    []
+  );
 
-  constructor(private todoService: TodoService) {}
-  public getMenu(): MenuItem[] {
-    return this.menus;
+  constructor(private listService: ListService) {
+    this.listService.findAll().subscribe((lists) => {
+      const menus = [
+        {
+          label: "Manage lists",
+          link: "/list",
+          icon: <HeroIconName>"view-list",
+          submenus: this.getListsMenu(lists),
+        },
+        {
+          label: "My archive",
+          link: "/archive",
+          icon: <HeroIconName>"archive",
+        },
+      ];
+      this.menus.next(menus);
+    });
   }
 
-  private getListsMenu(): MenuItem[] {
-    this.todoService.$lists.subscribe((lists) => (this.lists = lists));
-    console.log(this.lists);
-    return this.lists.map((list) => {
+  private getListsMenu(lists: List[]): MenuItem[] {
+    return lists.map((list) => {
       return {
         label: list.name,
         link: `/list/${list.id}`,
+        icon: <HeroIconName>"tag",
       };
     });
   }

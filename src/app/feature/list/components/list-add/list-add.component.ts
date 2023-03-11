@@ -1,15 +1,21 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  Output,
+} from "@angular/core";
 import { List } from "../../../../models/list.model";
-import { TodoService } from "../../../../services/todo.service";
 import { ListService } from "../../services/list.service";
 import { FormControl, FormGroup } from "@angular/forms";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-list-add",
   templateUrl: "./list-add.component.html",
   styleUrls: ["./list-add.component.scss"],
 })
-export class ListAddComponent implements OnInit {
+export class ListAddComponent implements OnDestroy {
   @Input() list: List = {} as List;
   @Input() visible!: boolean;
   @Input() layout: string = "horizontal";
@@ -19,20 +25,21 @@ export class ListAddComponent implements OnInit {
   public listForm: FormGroup = new FormGroup({
     listName: new FormControl<string>(""),
   });
-  constructor(
-    private todoService: TodoService,
-    private listService: ListService
-  ) {}
 
-  ngOnInit() {}
+  private subscription!: Subscription;
+  constructor(private listService: ListService) {}
 
   onAddList() {
     const list = new List(this.listForm.get("listName")?.getRawValue());
-    this.listService.save(list).subscribe((list) => {
+    this.subscription = this.listService.save(list).subscribe((list) => {
       this.listAdded.emit(list);
     });
-    //this.todoService.addList(this.list);
-    //this.listAdded.emit(this.list.id);
     this.listForm.reset();
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }
