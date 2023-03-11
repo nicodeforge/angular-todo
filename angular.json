@@ -82,7 +82,9 @@
         "test": {
           "builder": "@angular-builders/jest:run",
           "options": {
-            "reporters": ["jest-junit"],
+            "reporters": [
+              "jest-junit"
+            ],
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -93,6 +95,16 @@
               "src/styles.scss"
             ],
             "scripts": []
+          }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "todo-list:build:production",
+            "firebaseProject": "the-banette",
+            "firebaseHostingSite": "the-banette"
           }
         }
       }

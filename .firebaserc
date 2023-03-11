@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "the-banette": {
+      "hosting": {
+        "todo-list": [
+          "the-banette"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "the-banette"
+  }
+}

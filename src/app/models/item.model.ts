@@ -1,13 +1,27 @@
 export enum ItemStatusEnum {
   "DONE",
   "TODO",
-  "LATE"
+  "LATE",
+}
+
+export interface CreateItem {
+  name: string;
+  status: ItemStatusEnum;
+  createdAt: Date | string;
+  dueAt: Date | null | string;
+  completedAt?: Date | null;
+  listId: string;
+
+  isArchived: boolean;
 }
 
 export class Item {
   id!: string;
-  name!: string|null;
+  name!: string;
   status!: ItemStatusEnum;
-  dueAt!: Date|null|string;
-  completedAt?:Date|null;
+  createdAt!: Date | string;
+  dueAt!: Date | null | string;
+  completedAt?: Date | null;
+  listId!: string;
+  isArchived?: boolean = false;
 }

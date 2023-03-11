@@ -1,0 +1,62 @@
+<div class="container mx-auto px-4 mt-1">
+  <form
+    [formGroup]="itemForm"
+    (ngSubmit)="onAddItem2()"
+    class="bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-200 shadow-md rounded px-8 pt-6 pb-8 mb-4 flex justify-start items-start w-full"
+  >
+    <div class="inline-flex mr-1 grow">
+      <input
+        required
+        class="form-input grow rounded bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-200"
+        type="text"
+        id="itemName"
+        formControlName="name"
+        name="name"
+        placeholder="Add item"
+      />
+    </div>
+    <div class="flex flex-col mr-1 grow" *ngIf="showListSelect">
+      <select
+        formControlName="listId"
+        name="list"
+        class="form-select grow rounded"
+      >
+        <option *ngFor="let list of lists; index as i" [value]="list.id">
+          {{ list.name }}
+        </option>
+        <option (select)="onToggleListForm()">Create new list</option>
+      </select>
+      <button
+        type="button"
+        class="text-left text-blue-500"
+        (click)="onToggleListForm()"
+      >
+        {{ showListAddForm ? "Cancel" : "Add new list" }}
+      </button>
+      <!--<app-list-add
+        [visible]="showListAddForm"
+        (listAdded)="onSelectListOption($event)"
+      ></app-list-add>-->
+    </div>
+    <div class="inline-flex mr-1 flex-none">
+      <input
+        class="form-input bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-200 rounded"
+        #dateSelector
+        type="date"
+        id="itemDueAt"
+        formControlName="dueAt"
+        name="dueAt"
+        placeholder="Due date"
+      />
+    </div>
+    <div class="inline-flex mr-1 flex-none">
+      <button
+        [disabled]="!itemForm.valid"
+        class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+        type="submit"
+      >
+        {{ isEditMode ? "Update" : "Add" }}
+      </button>
+    </div>
+  </form>
+</div>
