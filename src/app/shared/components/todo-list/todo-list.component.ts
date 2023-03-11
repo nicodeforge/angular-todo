@@ -6,7 +6,6 @@ import {
   Output,
 } from "@angular/core";
 import { Item, ItemStatusEnum } from "../../../models/item.model";
-import { TodoService } from "../../../services/todo.service";
 import { List } from "../../../models/list.model";
 import { ItemService } from "../../../services/item.service";
 import { Subscription } from "rxjs";
@@ -26,16 +25,17 @@ export class TodoListComponent implements OnDestroy {
   @Output() itemEditted: EventEmitter<Item> = new EventEmitter<Item>();
   public subscription!: Subscription;
   constructor(
-    private todoService: TodoService,
     private itemService: ItemService,
 
     private archiveService: ArchiveService
   ) {}
 
   onArchiveItem(item: Item) {
-    this.archiveService.archiveItem(item).subscribe((item) => {
-      this.itemArchived.next(item);
-    });
+    this.subscription = this.archiveService
+      .archiveItem(item)
+      .subscribe((item) => {
+        this.itemArchived.next(item);
+      });
   }
 
   onEditItem(item: Item) {
@@ -66,6 +66,8 @@ export class TodoListComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    //this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

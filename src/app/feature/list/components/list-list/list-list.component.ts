@@ -1,6 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from "@angular/core";
 import { List } from "../../../../models/list.model";
-import { TodoService } from "../../../../services/todo.service";
 import { Subscription } from "rxjs";
 import { ListService } from "../../services/list.service";
 import { Router } from "@angular/router";
@@ -11,12 +10,11 @@ import { Router } from "@angular/router";
   styleUrls: ["./list-list.component.scss"],
 })
 export class ListListComponent implements OnInit, OnDestroy {
-  public lists!: List[];
-  public subscription!: Subscription;
   @Input("show") showLists: boolean = true;
+  public lists!: List[];
   public showListAdd: boolean = false;
+  private subscription!: Subscription;
   constructor(
-    private readonly todoService: TodoService,
     private readonly listService: ListService,
     private router: Router
   ) {}
@@ -41,10 +39,12 @@ export class ListListComponent implements OnInit, OnDestroy {
   }
 
   public onArchiveList(listId: string) {
-    this.todoService.archiveList(listId);
+    //TODO Implement list archive
   }
 
-  onEditList(listId: string) {}
+  onEditList(listId: string) {
+    //TODO Implement list edit
+  }
 
   public ngOnDestroy() {
     this.subscription.unsubscribe();

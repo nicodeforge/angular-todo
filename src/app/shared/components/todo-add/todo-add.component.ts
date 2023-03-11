@@ -1,8 +1,14 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from "@angular/core";
 import { CreateItem, Item, ItemStatusEnum } from "../../../models/item.model";
-import { TodoService } from "../../../services/todo.service";
 import { List } from "../../../models/list.model";
-import { Subject } from "rxjs";
+import { Subject, Subscription } from "rxjs";
 import { FormControl, FormGroup } from "@angular/forms";
 import { ItemService } from "../../../services/item.service";
 
@@ -11,33 +17,31 @@ import { ItemService } from "../../../services/item.service";
   templateUrl: "./todo-add.component.html",
   styleUrls: ["./todo-add.component.scss"],
 })
-export class TodoAddComponent implements OnInit {
-  public isEditMode: boolean = false;
-  public lists!: List[];
-  public showListAddForm: boolean = false;
-
+export class TodoAddComponent implements OnInit, OnDestroy {
   @Input() itemEditted: Subject<Item> = new Subject<Item>();
-  public itemForm: FormGroup = new FormGroup({
-    name: new FormControl(),
-    dueAt: new FormControl(),
-    listId: new FormControl(),
-  });
   @Input() showListSelect: boolean = true;
   @Input() list!: List;
   @Output() itemAdded: EventEmitter<Item> = new EventEmitter<Item>();
   @Output("itemEditted") itemUpdated: EventEmitter<Item> =
     new EventEmitter<Item>();
+  public isEditMode: boolean = false;
+
+  public lists!: List[];
+  public showListAddForm: boolean = false;
+  public itemForm: FormGroup = new FormGroup({
+    name: new FormControl(),
+    dueAt: new FormControl(),
+    listId: new FormControl(),
+  });
   private item!: Item;
-  constructor(
-    private todoService: TodoService,
-    private itemService: ItemService
-  ) {}
+
+  private subscription!: Subscription;
+  constructor(private itemService: ItemService) {}
 
   ngOnInit() {
-    console.log(this.list.id);
     this.itemForm.get("listId")?.setValue(this.list.id);
 
-    this.itemEditted.subscribe((item) => {
+    this.subscription = this.itemEditted.subscribe((item) => {
       if (item.name) {
         this.item = item;
         this.itemForm.get("name")?.setValue(item.name);
@@ -129,10 +133,7 @@ export class TodoAddComponent implements OnInit {
     this.showListAddForm = !this.showListAddForm;
   }
 
-  /*onSelectListOption($event: string) {
-    this.onToggleListForm();
-    this.item.listId = $event;
-    console.log("Selected list : ", $event);
-    console.log("Item", this.item);
-  }*/
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 }

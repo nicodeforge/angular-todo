@@ -1,6 +1,5 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { TodoComponent } from "./components/todo/todo.component";
 import { TodoAddComponent } from "./components/todo-add/todo-add.component";
 import { TodoListComponent } from "./components/todo-list/todo-list.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -10,7 +9,6 @@ import { DateInputConverter } from "./directives/date-input-converter.directive"
 @NgModule({
   declarations: [
     DateInputConverter,
-    TodoComponent,
     TodoAddComponent,
     TodoListComponent,
     TodoHistoryComponent,
