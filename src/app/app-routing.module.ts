@@ -13,6 +13,11 @@ const routes: Routes = [
       import("./feature/archive/archive.module").then((m) => m.ArchiveModule),
   },
   {
+    path: "user",
+    loadChildren: () =>
+      import("./feature/user/user.module").then((m) => m.UserModule),
+  },
+  {
     path: "",
     pathMatch: "full",
     redirectTo: "list",
