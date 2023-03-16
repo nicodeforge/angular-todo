@@ -3,11 +3,17 @@
   class="container mx-auto px-4 mt-1 flex-wrap"
 >
   <div
-    *ngFor="let list of lists; let i = index"
+    *ngFor="let list of activeLists; let i = index"
     class="grid aspect-square hover:cursor-pointer hover:shadow-lg transition-shadow justify-items-stretch flex-col w-4/12 p-4 rounded shadow-md bg-white mr-4 mb-4 dark:bg-slate-800"
   >
+    <div class="flex justify-self-start self-start">
+      <span class="rounded-lg text-xs bg-blue-400 text-white px-2 py-0.5">
+        {{ user.uid === list.ownedByUserId ? "Owned" : "Shared" }}
+      </span>
+    </div>
+
     <div
-      class="flex justify-self-center self-end"
+      class="flex justify-self-center self-center"
       (click)="onNavigateToList(list.id)"
     >
       <h2 class="text-slate-600 font-bold text-lg">
@@ -47,7 +53,10 @@
       [layout]="'vertical'"
       (listAdded)="onToggleListAdd()"
     ></app-list-add>
-    <div class="self-end justify-self-end">
+    <div
+      *ngIf="user.uid === list.ownedByUserId"
+      class="self-end justify-self-end"
+    >
       <button class="mr-4" (click)="onEditList(list.id)">
         <svg
           xmlns="http://www.w3.org/2000/svg"

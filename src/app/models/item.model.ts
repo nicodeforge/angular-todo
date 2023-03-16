@@ -24,4 +24,7 @@ export class Item {
   completedAt?: Date | null;
   listId!: string;
   isArchived?: boolean = false;
+
+  ownedByUserId!: string;
+  sharedWithUserId?: string[];
 }

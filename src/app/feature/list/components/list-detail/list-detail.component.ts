@@ -3,6 +3,9 @@ import { ActivatedRoute } from "@angular/router";
 import { List } from "../../../../models/list.model";
 import { Subscription } from "rxjs";
 import { Item } from "../../../../models/item.model";
+import { User } from "../../../../models/user.model";
+import { UserService } from "../../../user/services/user.service";
+import { ItemService } from "../../../../services/item.service";
 
 @Component({
   selector: "app-list-detail",
@@ -10,22 +13,39 @@ import { Item } from "../../../../models/item.model";
   styleUrls: ["./list-detail.component.scss"],
 })
 export class ListDetailComponent implements OnInit, OnDestroy {
+  public user!: User;
   public list!: List;
   public items!: Item[];
   private listSubscription!: Subscription;
   public activeItems!: Item[];
   public archivedItems!: Item[];
   public itemEditted: EventEmitter<Item> = new EventEmitter<Item>();
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private userService: UserService,
+    private itemService: ItemService
+  ) {}
   ngOnInit() {
     this.listSubscription = this.route.data.subscribe((data) => {
       this.list = data["list"];
       this.items = data["items"];
-
+      console.log("list-detail items", this.items);
       this.activeItems = this.items.filter((item) => !item.isArchived);
       this.archivedItems = this.items.filter((item) => item.isArchived);
-      console.log(this.list);
+
+      this.itemService.items.subscribe((items) => {
+        if (items) {
+          this.items = items.filter(
+            (items) => items.listId === data["list"].id
+          );
+          this.activeItems = this.items.filter((item) => !item.isArchived);
+          this.archivedItems = this.items.filter((item) => item.isArchived);
+          console.log("Items set", this.items);
+        }
+      });
     });
+
+    this.user = this.userService.getUser();
   }
 
   ngOnDestroy() {

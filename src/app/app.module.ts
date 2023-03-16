@@ -13,6 +13,12 @@ import { environment } from "../environments/environment";
 import { provideAuth, getAuth } from "@angular/fire/auth";
 import { provideDatabase, getDatabase } from "@angular/fire/database";
 import { HttpClientModule } from "@angular/common/http";
+import {
+  AngularFireAuth,
+  AngularFireAuthModule,
+} from "@angular/fire/compat/auth";
+import { AngularFireModule } from "@angular/fire/compat";
+import { AngularFireDatabaseModule } from "@angular/fire/compat/database";
 
 @NgModule({
   declarations: [AppComponent],
@@ -35,8 +41,12 @@ import { HttpClientModule } from "@angular/common/http";
         attachDefaultDimensionsIfNoneFound: true, // default 'false'
       }
     ),
-    provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideAuth(() => getAuth()),
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
+    AngularFireDatabaseModule,
+
+    //provideFirebaseApp(() => initializeApp(environment.firebase)),
+    //provideAuth(() => getAuth(initializeApp(environment.firebase))),
     provideDatabase(() => getDatabase()),
   ],
   providers: [],

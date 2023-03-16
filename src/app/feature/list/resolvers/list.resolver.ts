@@ -4,7 +4,7 @@ import {
   RouterStateSnapshot,
   ActivatedRouteSnapshot,
 } from "@angular/router";
-import { Observable } from "rxjs";
+import { map, Observable } from "rxjs";
 import { List } from "../../../models/list.model";
 import { ListService } from "../services/list.service";
 
@@ -18,6 +18,10 @@ export class ListResolver implements Resolve<List> {
     state: RouterStateSnapshot
   ): Observable<List> {
     const listId = <string>route.paramMap.get("id");
-    return this.listService.findById(listId);
+    return this.listService.lists.pipe(
+      map((lists) => {
+        return lists.find((list) => list.id === listId) ?? <List>{};
+      })
+    );
   }
 }

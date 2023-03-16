@@ -7,9 +7,11 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ListService } from "./services/list.service";
 import { ListDetailComponent } from "./components/list-detail/list-detail.component";
 import { SharedModule } from "../../shared/shared.module";
+import { ListShareComponent } from './components/list-share/list-share.component';
+import { ListAcceptInviteComponent } from './components/list-accept-invite/list-accept-invite.component';
 
 @NgModule({
-  declarations: [ListListComponent, ListAddComponent, ListDetailComponent],
+  declarations: [ListListComponent, ListAddComponent, ListDetailComponent, ListShareComponent, ListAcceptInviteComponent],
   imports: [
     CommonModule,
     ListRoutingModule,

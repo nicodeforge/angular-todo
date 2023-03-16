@@ -92,9 +92,13 @@ export class TodoAddComponent implements OnInit, OnDestroy {
           : ItemStatusEnum.LATE,
     };
 
-    this.itemService.save(newItem).subscribe((item: Item) => {
-      this.itemAdded.emit(item);
+    /*this.itemService.save(newItem).subscribe((item: Item) => {
       this.itemForm.reset();
+      this.itemAdded.emit(item);
+    });*/
+    this.itemService.save(newItem).then(() => {
+      this.itemForm.reset();
+      this.itemAdded.emit();
     });
   }
   private handleUpdateItem(): void {

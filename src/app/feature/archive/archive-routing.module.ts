@@ -2,6 +2,7 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { ArchiveListComponent } from "./archive-list/archive-list.component";
 import { ItemResolver } from "../list/resolvers/item.resolver";
+import { ListResolver } from "../list/resolvers/list.resolver";
 
 const routes: Routes = [
   {

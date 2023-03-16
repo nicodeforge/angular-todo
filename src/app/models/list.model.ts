@@ -4,6 +4,12 @@ export class List {
   public id!: string;
   public items: Item[] = [];
 
+  public ownedByUserId!: string;
+  public sharedWithUserId!: string[];
+
+  public users!: Record<string, boolean>;
+  public isArchived: boolean = false;
+
   constructor(public name: string) {
     this.id = this.generateUUID();
   }

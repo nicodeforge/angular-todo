@@ -1,19 +1,37 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { List } from "../models/list.model";
-import { map, Observable, switchMap } from "rxjs";
+import { filter, map, Observable, switchMap } from "rxjs";
 import { API_URL, ITEMS_ENDPOINT } from "../constants";
 import { FirebaseNamedResource } from "./list.repository";
 import { CreateItem, Item } from "../models/item.model";
+import { UserService } from "../feature/user/services/user.service";
+import { User } from "../models/user.model";
+import { ListService } from "../feature/list/services/list.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class ItemRepository {
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private listService: ListService,
+    private userService: UserService
+  ) {}
 
   public findAll(): Observable<Item[]> {
-    return this.http.get<any>(API_URL + ITEMS_ENDPOINT).pipe(
+    const user = this.userService.getUser();
+    let params = {};
+    if (user) {
+      params = {
+        params: {
+          orderBy: `"ownedByUserId"`,
+          equalTo: `"${user.uid}"`,
+        },
+      };
+    }
+    //TODO : Find all method should only returns items part of a list attributed to the loggedIn user
+    return this.http.get<any>(API_URL + ITEMS_ENDPOINT, params).pipe(
       map((items) => {
         if (items) {
           return Object.values(items);
@@ -29,7 +47,11 @@ export class ItemRepository {
       .post<FirebaseNamedResource>(API_URL + ITEMS_ENDPOINT, newItem)
       .pipe(
         map((itemIdentifier: FirebaseNamedResource) => {
-          const item: Item = { ...newItem, id: itemIdentifier.name };
+          const item: Item = {
+            ...newItem,
+            id: itemIdentifier.name,
+            ownedByUserId: this.userService.getUser().uid,
+          };
           return item;
         }),
         switchMap((item: Item) => {

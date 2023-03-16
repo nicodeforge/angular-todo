@@ -8,7 +8,8 @@ import {
 import { List } from "../../../../models/list.model";
 import { ListService } from "../../services/list.service";
 import { FormControl, FormGroup } from "@angular/forms";
-import { Subscription } from "rxjs";
+import { Subscription, take } from "rxjs";
+import { UserService } from "../../../user/services/user.service";
 
 @Component({
   selector: "app-list-add",
@@ -27,14 +28,29 @@ export class ListAddComponent implements OnDestroy {
   });
 
   private subscription!: Subscription;
-  constructor(private listService: ListService) {}
+  constructor(
+    private listService: ListService,
+    private userService: UserService
+  ) {}
 
   onAddList() {
-    const list = new List(this.listForm.get("listName")?.getRawValue());
-    this.subscription = this.listService.save(list).subscribe((list) => {
-      this.listAdded.emit(list);
+    let list = new List(this.listForm.get("listName")?.getRawValue());
+    this.userService.user$.pipe(take(1)).subscribe((user) => {
+      list.ownedByUserId = user.uid;
+      list.sharedWithUserId = [user.uid];
+      list.users = { ...list.users, [user.uid]: true };
+      this.userService.addList(user, list).then(() => {
+        this.listForm.reset();
+        this.listAdded.emit(list);
+      });
+      /*this.subscription = this.listService.save(list).subscribe((list) => {
+        console.log("before", user.lists);
+        user.lists = { ...user.lists, [list.id]: list };
+        console.log("after", user.lists);
+        this.userService.update(user);
+        //this.listAdded.emit(list);
+      });*/
     });
-    this.listForm.reset();
   }
 
   ngOnDestroy() {

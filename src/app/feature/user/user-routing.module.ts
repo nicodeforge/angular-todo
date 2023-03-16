@@ -1,9 +1,10 @@
 import { NgModule } from "@angular/core";
 import { Route, RouterModule } from "@angular/router";
-import { SignInComponent } from "./sign-in/sign-in.component";
-import { SignUpComponent } from "./sign-up/sign-up.component";
-import { ForgotPasswordComponent } from "./forgot-password/forgot-password.component";
-import { VerifyEmailComponent } from "./verify-email/verify-email.component";
+import { SignInComponent } from "./components/sign-in/sign-in.component";
+import { SignUpComponent } from "./components/sign-up/sign-up.component";
+import { ForgotPasswordComponent } from "./components/forgot-password/forgot-password.component";
+import { VerifyEmailComponent } from "./components/verify-email/verify-email.component";
+import { ProfileComponent } from "./profile/profile.component";
 const routes: Route[] = [
   {
     path: "sign-in",
@@ -20,6 +21,10 @@ const routes: Route[] = [
   {
     path: "verify-email-address",
     component: VerifyEmailComponent,
+  },
+  {
+    path: "profile",
+    component: ProfileComponent,
   },
 ];
 @NgModule({

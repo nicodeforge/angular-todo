@@ -1,3 +1,7 @@
+<app-list-share
+  *ngIf="list.ownedByUserId === user.uid"
+  [list]="list"
+></app-list-share>
 <app-todo-add
   [showListSelect]="false"
   [list]="list"

@@ -12,7 +12,7 @@ export class MenuService {
   );
 
   constructor(private listService: ListService) {
-    this.listService.findAll().subscribe((lists) => {
+    /*this.listService.findAll().subscribe((lists) => {
       const menus = [
         {
           label: "Manage lists",
@@ -27,16 +27,40 @@ export class MenuService {
         },
       ];
       this.menus.next(menus);
+    });*/
+    let menus;
+
+    this.listService.lists.subscribe((lists) => {
+      console.log("Menu :", lists);
+      menus = [
+        {
+          label: "Manage lists",
+          link: "/list",
+          icon: <HeroIconName>"view-list",
+          submenus: lists.length > 0 ? this.getListsMenu(lists) : undefined,
+        },
+        {
+          label: "My archive",
+          link: "/archive",
+          icon: <HeroIconName>"archive",
+        },
+      ];
+      this.menus.next(menus);
     });
   }
 
-  private getListsMenu(lists: List[]): MenuItem[] {
-    return lists.map((list) => {
-      return {
-        label: list.name,
-        link: `/list/${list.id}`,
-        icon: <HeroIconName>"tag",
-      };
-    });
+  private getListsMenu(lists: List[]): MenuItem[] | undefined {
+    if (lists) {
+      return lists
+        .filter((list) => list.isArchived === false)
+        .map((list) => {
+          return {
+            label: list.name,
+            link: `/list/${list.id}`,
+            icon: <HeroIconName>"tag",
+          };
+        });
+    }
+    return undefined;
   }
 }
